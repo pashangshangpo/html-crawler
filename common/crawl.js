@@ -5,6 +5,7 @@
  */
 
 const http = require('http')
+const https = require('https')
 const iconv = require('iconv-lite')
 const JSDOM = require('jsdom').JSDOM
 const parseHTML = require('./parseHTML')
@@ -35,7 +36,12 @@ module.exports = class Crawl {
 
   getHTML(url, decode = 'utf-8') {
     return new Promise(resolve => {
-      http.get(url, res => {
+      let type = http
+      if (url.indexOf('https') === 0) {
+        type = https
+      }
+      
+      type.get(url, res => {
         let chunks = []
         res.on('data', check => chunks.push(check))
         res.on('end', () => {
