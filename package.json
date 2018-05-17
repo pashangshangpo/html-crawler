@@ -6,6 +6,7 @@
   "devDependencies": {
     "iconv-lite": "^0.4.23",
     "jsdom": "^11.10.0",
-    "xmlserializer": "^0.6.1"
+    "xmlserializer": "^0.6.1",
+    "jsonToMobi": "https://github.com/pashangshangpo/jsonToMobi.git"
   }
 }

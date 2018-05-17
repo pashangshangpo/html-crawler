@@ -311,6 +311,10 @@ json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "http://registry.npm.taobao.org/json-stringify-safe/download/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
+"jsonToMobi@https://github.com/pashangshangpo/jsonToMobi.git":
+  version "1.0.0"
+  resolved "https://github.com/pashangshangpo/jsonToMobi.git#a9e3010e842d1f3716b216f73d6234c4c782476a"
+
 jsprim@^1.2.2:
   version "1.4.1"
   resolved "http://registry.npm.taobao.org/jsprim/download/jsprim-1.4.1.tgz#313e66bc1e5cc06e438bc1b7499c2e5c56acb6a2"
