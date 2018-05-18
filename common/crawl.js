@@ -45,13 +45,13 @@ module.exports = class Crawl {
 
       const urlParse = new urlTool.URL(url)
       const options = {
-        href: urlParse.url,
+        href: urlParse.href,
         origin: urlParse.origin,
         protocol: urlParse.protocol,
         host: urlParse.host,
         hostname: urlParse.hostname,
         port: urlParse.port,
-        path: urlParse.path,
+        path: urlParse.pathname,
         search: urlParse.search,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36'
