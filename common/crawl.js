@@ -6,6 +6,7 @@
 
 const http = require('http')
 const https = require('https')
+const zlib = require('zlib')
 const iconv = require('iconv-lite')
 const JSDOM = require('jsdom').JSDOM
 const parseHTML = require('./parseHTML')
@@ -42,11 +43,38 @@ module.exports = class Crawl {
       }
       
       type.get(url, res => {
+        let encoding = res.headers['content-encoding']
         let chunks = []
+
         console.log('正在获取: ', url)
+
         res.on('data', check => chunks.push(check))
         res.on('end', () => {
-          resolve(iconv.decode(Buffer.concat(chunks), decode))
+          let buffer = Buffer.concat(chunks)
+
+          if (encoding === 'gzip') {
+            zlib.unzip(buffer, (err, decoded) => {
+              if (!err) {
+                resolve(decoded.toString())
+              }
+              else {
+                throw err
+              }
+            })
+          }
+          else if (encoding === 'deflate') {
+            zlib.inflate(buffer, (err, decoded) => {
+                if (!err) {
+                  resolve(decoded.toString())
+                }
+                else {
+                  throw err
+                }
+            })
+          }
+          else {
+            resolve(iconv.decode(buffer, decode))
+          }
         })
       })
     })
