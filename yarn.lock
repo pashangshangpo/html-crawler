@@ -570,3 +570,7 @@ xml-name-validator@^3.0.0:
 xmlserializer@^0.6.1:
   version "0.6.1"
   resolved "http://registry.npm.taobao.org/xmlserializer/download/xmlserializer-0.6.1.tgz#14099f60272e16cb608be3758992f998070cc29a"
+
+zlib@^1.0.5:
+  version "1.0.5"
+  resolved "http://registry.npm.taobao.org/zlib/download/zlib-1.0.5.tgz#6e7c972fc371c645a6afb03ab14769def114fcc0"

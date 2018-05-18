@@ -7,6 +7,7 @@
     "iconv-lite": "^0.4.23",
     "jsdom": "^11.10.0",
     "jsonToMobi": "https://github.com/pashangshangpo/jsonToMobi.git",
-    "xmlserializer": "^0.6.1"
+    "xmlserializer": "^0.6.1",
+    "zlib": "^1.0.5"
   }
 }
