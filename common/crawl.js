@@ -6,6 +6,7 @@
 
 const http = require('http')
 const https = require('https')
+const urlTool = require('url')
 const zlib = require('zlib')
 const iconv = require('iconv-lite')
 const JSDOM = require('jsdom').JSDOM
@@ -88,7 +89,7 @@ module.exports = class Crawl {
       const result = []
       const getInfo = async () => {
         navList = navList.map(item => {
-          if (url.parse(item.href).protocol == null) {
+          if (urlTool.parse(item.href).protocol == null) {
             item.href = `${this.baseUrl}/${item.href}`
           }
 
