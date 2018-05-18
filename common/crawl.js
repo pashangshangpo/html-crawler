@@ -87,6 +87,14 @@ module.exports = class Crawl {
     }).then(async navList => {
       const result = []
       const getInfo = async () => {
+        navList = navList.map(item => {
+          if (url.parse(item.href).protocol == null) {
+            item.href = `${this.baseUrl}/${item.href}`
+          }
+
+          return item
+        })
+
         for (let item of navList) {
           await this.getHTML(item.href, decode).then(html => {
             const document = new JSDOM(html).window.document
