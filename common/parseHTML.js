@@ -34,7 +34,7 @@ module.exports = (html, url) => {
   })
   
   // 过滤script,link,iframe
-  Array.from(document.querySelectorAll('script,link,iframe')).forEach(el => {
+  Array.from(document.querySelectorAll('script,link,iframe,embed,object')).forEach(el => {
     el.parentNode.removeChild(el)
   })
   
