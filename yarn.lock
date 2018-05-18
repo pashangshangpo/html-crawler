@@ -313,7 +313,7 @@ json-stringify-safe@~5.0.1:
 
 "jsonToMobi@https://github.com/pashangshangpo/jsonToMobi.git":
   version "1.0.0"
-  resolved "https://github.com/pashangshangpo/jsonToMobi.git#325a88b1784008e4edf9c2c2ae2955877df2df4d"
+  resolved "https://github.com/pashangshangpo/jsonToMobi.git#e1243cbdb755936268a541420a2df1954923ae11"
 
 jsprim@^1.2.2:
   version "1.4.1"

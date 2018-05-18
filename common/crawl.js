@@ -93,6 +93,8 @@ module.exports = class Crawl {
             item.href = `${this.baseUrl}/${item.href}`
           }
 
+          item.href = decodeURI(item.href)
+
           return item
         })
 
