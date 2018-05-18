@@ -43,6 +43,7 @@ module.exports = class Crawl {
       
       type.get(url, res => {
         let chunks = []
+        console.log('正在获取: ', url)
         res.on('data', check => chunks.push(check))
         res.on('end', () => {
           resolve(iconv.decode(Buffer.concat(chunks), decode))
