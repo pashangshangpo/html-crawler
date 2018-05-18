@@ -96,7 +96,7 @@ module.exports = class Crawl {
   getPage(url, decode, baseUrl) {
     return this.getHTML(url, decode).then(html => {
       const document = new JSDOM(html).window.document
-      return this.getNavList(document)
+      return this.getNavList(document, url)
     }).then(async navList => {
       const result = []
       const getInfo = async () => {
@@ -113,7 +113,7 @@ module.exports = class Crawl {
         for (let item of navList) {
           await this.getHTML(item.href, decode).then(html => {
             const document = new JSDOM(html).window.document
-            const content = this.getContent(document)
+            const content = this.getContent(document, item.href)
             const resultHTML = parseHTML(content, baseUrl)
 
             result.push({
