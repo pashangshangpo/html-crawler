@@ -10,7 +10,6 @@ const urlTool = require('url')
 const zlib = require('zlib')
 const iconv = require('iconv-lite')
 const JSDOM = require('jsdom').JSDOM
-const parseHTML = require('./parseHTML')
 
 /**
  * @start-def: Crawl: config => undefined
@@ -123,14 +122,11 @@ module.exports = class Crawl {
         for (let item of navList) {
           await this.getHTML(item.href, decode).then(html => {
             const document = new JSDOM(html).window.document
-            const content = this.getContent(document, item.href)
-            const resultHTML = parseHTML(content, baseUrl)
 
             result.push({
               title: item.title,
               href: item.href,
-              content: resultHTML.html,
-              imgs: resultHTML.imgs
+              content: this.getContent(document, item.href)
             })
           })
         }
