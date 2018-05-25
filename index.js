@@ -32,7 +32,6 @@ const parseHTML = require('./parseHTML')
 module.exports = class Crawl {
   constructor(config) {
     const { 
-      baseUrl, 
       pageUrls, 
       decode = 'utf-8',
       getNavList,
@@ -40,7 +39,6 @@ module.exports = class Crawl {
       getArticles
     } = config
 
-    this.baseUrl = baseUrl
     this.pageUrls = pageUrls
     this.decode = decode
     this.getNavList = getNavList
@@ -106,16 +104,19 @@ module.exports = class Crawl {
     })
   }
 
-  getPage(url, decode, baseUrl) {
+  getPage(url, decode) {
     return this.getHTML(url, decode).then(html => {
       const document = new JSDOM(html).window.document
       return this.getNavList(document, url)
     }).then(async navList => {
       const result = []
       const getInfo = async () => {
+        const urlParse = urlTool.parse(url)
+        const baseUrl = `${urlParse.protocol}//${urlParse.host}`
+
         navList = navList.map(item => {
           if (urlTool.parse(item.href).protocol == null) {
-            item.href = `${this.baseUrl}/${item.href}`
+            item.href = `${baseUrl}/${item.href}`
           }
 
           item.href = decodeURI(item.href)
@@ -144,16 +145,16 @@ module.exports = class Crawl {
     })
   }
 
-  async forPage(decode, baseUrl, pageUrls) {
+  async forPage(decode, pageUrls) {
     let result = []
     for (let url of pageUrls) {
-      result = result.concat(await this.getPage(url, decode, baseUrl))
+      result = result.concat(await this.getPage(url, decode))
     }
 
     return result
   }
 
   init() {
-    return this.forPage(this.decode, this.baseUrl, this.pageUrls)
+    return this.forPage(this.decode, this.pageUrls)
   }
 }
