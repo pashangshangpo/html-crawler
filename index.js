@@ -30,13 +30,26 @@ const parseHTML = require('./parseHTML')
  *   getContent: document => String 需要返回文章内容
  */
 module.exports = class Crawl {
-  constructor(baseUrl, pageUrls, decode) {
+  constructor(config) {
+    const { 
+      baseUrl, 
+      pageUrls, 
+      decode = 'utf-8',
+      getNavList,
+      getContent,
+      getArticles
+    } = config
+
     this.baseUrl = baseUrl
     this.pageUrls = pageUrls
     this.decode = decode
+    this.getNavList = getNavList
+    this.getContent = getContent
+
+    this.init().then(getArticles)
   }
 
-  getHTML(url, decode = 'utf-8') {
+  getHTML(url, decode) {
     return new Promise(resolve => {
       let type = http
       if (url.indexOf('https') === 0) {
@@ -54,7 +67,7 @@ module.exports = class Crawl {
           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36'
         }
       }
-      
+
       type.get(options, res => {
         let encoding = res.headers['content-encoding']
         let chunks = []
@@ -77,12 +90,12 @@ module.exports = class Crawl {
           }
           else if (encoding === 'deflate') {
             zlib.inflate(buffer, (err, decoded) => {
-                if (!err) {
-                  resolve(decoded.toString())
-                }
-                else {
-                  throw err
-                }
+              if (!err) {
+                resolve(decoded.toString())
+              }
+              else {
+                throw err
+              }
             })
           }
           else {
@@ -140,7 +153,7 @@ module.exports = class Crawl {
     return result
   }
 
-  getArticles() {
+  init() {
     return this.forPage(this.decode, this.baseUrl, this.pageUrls)
   }
 }
