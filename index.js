@@ -13,21 +13,17 @@ const JSDOM = require('jsdom').JSDOM
 const parseHTML = require('./parseHTML')
 
 /**
- * @start-def: Crawl: baseUrl, pageUrls, decode => undefined
- *   baseUrl: String 基础url
- *   pageUrls: Array [Item]
- *     Item: String 页面URL
- *   decode: String 编码格式
- * 
- *   Function
- *     getArticles: () => Array 获取文章列表
- * 
- * 使用说明,获取文章列表需要覆盖Crawl的两个方法
- *   getNavList: document => Array [Item] 需要返回导航数组列表
- *     Item: Object
- *       title: String 标题
- *       href: String 文章链接地址, 绝对路径
- *   getContent: document => String 需要返回文章内容
+ * @start-def: Crawl: config => undefined
+ *   config: Object
+ *     pageUrls: Array
+ *       Item: String 页面URL
+ *     decode: String 解码格式 默认utf-8
+ *     getNavList: document => Array 需要返回页面导航列表
+ *       Item: Object
+ *         title: String 标题
+ *         href: String 链接
+ *     getContent: document => String 需要返回html内容
+ *     getArticles: res => undefined 获取文章列表, 最终结果
  */
 module.exports = class Crawl {
   constructor(config) {
