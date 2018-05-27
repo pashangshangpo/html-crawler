@@ -26,8 +26,8 @@ const JSDOM = require('jsdom').JSDOM
  */
 module.exports = class Crawl {
   constructor(config) {
-    const { 
-      pageUrls, 
+    const {
+      pageUrls,
       decode = 'utf-8',
       getNavList,
       getContent,
@@ -104,49 +104,55 @@ module.exports = class Crawl {
       const document = new JSDOM(html).window.document
       return this.getNavList(document, url)
     }).then(async navList => {
-      const result = []
-      const getInfo = async () => {
-        const urlParse = urlTool.parse(url)
-        const baseUrl = `${urlParse.protocol}//${urlParse.host}`
+      let list = []
+      const urlParse = urlTool.parse(url)
+      const baseUrl = `${urlParse.protocol}//${urlParse.host}`
 
-        navList = navList.map(item => {
-          if (urlTool.parse(item.href).protocol == null) {
-            item.href = `${baseUrl}/${item.href}`
-          }
+      navList = navList.map(item => {
+        if (urlTool.parse(item.href).protocol == null) {
+          item.href = `${baseUrl}/${item.href}`
+        }
 
-          item.href = decodeURI(item.href)
+        item.href = decodeURI(item.href)
 
-          return item
-        })
+        return item
+      })
 
-        for (let item of navList) {
-          await this.getHTML(item.href, decode).then(html => {
+      for (let item of navList) {
+        list.push(
+          this.getHTML(item.href, decode).then(html => {
             const document = new JSDOM(html).window.document
 
-            result.push({
+            return {
               title: item.title,
               href: item.href,
               content: this.getContent(document, item.href)
-            })
+            }
           })
-        }
+        )
       }
 
-      await getInfo()
-      return result
+      return await Promise.all(list)
     })
   }
 
   async forPage(decode, pageUrls) {
-    let result = []
+    let list = []
+
     for (let url of pageUrls) {
-      result = result.concat(await this.getPage(url, decode))
+      list.push(this.getPage(url, decode))
     }
 
-    return result
+    return await Promise.all(list)
   }
 
   init() {
-    return this.forPage(this.decode, this.pageUrls)
+    return this.forPage(this.decode, this.pageUrls).then(values => {
+      const result = []
+
+      values.forEach(list => result.push(...list))
+
+      return result
+    })
   }
 }
